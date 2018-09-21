@@ -31,11 +31,10 @@ export default {
     }
     this.getListData();
   },
-  onShow(){
-    wx.setNavigationBarTitle({title:"专题"})
+  onShow() {
+    wx.setNavigationBarTitle({ title: "专题" });
   },
-  created() {
-  },
+  created() {},
   mounted() {
     this.getListData(true);
   },
@@ -49,15 +48,22 @@ export default {
   components: {},
   methods: {
     async getListData(first) {
-      const data = await get("/topic/listaction", {
-        page: this.page
-      });
-      this.total = data.total;
-      if (first) {
-        this.topicList = data.data;
-      } else {
-        //上拉加载跟多
-        this.topicList = this.topicList.concat(data.data);
+      try {
+        const data = await get("/topic/listaction", {
+          page: this.page
+        });
+        this.total = data.total;
+        if (first) {
+          this.topicList = data.data;
+        } else {
+          //上拉加载跟多
+          this.topicList = this.topicList.concat(data.data);
+        }
+      } catch (error) {
+        wx.showToast({
+          title: "数据获取失败",
+          icon: "loading"
+        });
       }
     },
     topicDetail(id) {

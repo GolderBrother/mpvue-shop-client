@@ -23,52 +23,51 @@
 </template>
 
 <script>
-  import {
-    get
-  } from "../../utils";
-  export default {
-    onLoad() {
-      this.initData()
+import { get } from "../../utils";
+export default {
+  onLoad() {
+    this.initData();
+  },
+  created() {},
+  mounted() {
+    //获取页面传的参数
+    this.categoryId = this.$root.$mp.query.id;
+    this.getAllData();
+  },
+  data() {
+    return {
+      categoryId: "",
+      nowIndex: 0,
+      goodsList: [],
+      navData: [],
+      currentNav: {},
+      scrollLeft: 0
+    };
+  },
+  components: {},
+  methods: {
+    initData() {
+      this.categoryId = "";
+      this.nowIndex = 0;
+      this.goodsList = [];
+      this.navData = [];
+      this.currentNav = {};
+      this.scrollLeft = 0;
     },
-    created() {},
-    mounted() {
-      //获取页面传的参数
-      this.categoryId = this.$root.$mp.query.id;
-      this.getAllData();
+    async changeTab(index, id) {
+      this.nowIndex = index;
+      const listdata = await get("/goods/goodsList", {
+        categoryId: id
+      });
+      this.goodsList = listdata.data;
+      this.currentNav = listdata.currentNav;
+      //需要让导航滚动到可见区域
+      if (this.nowIndex > 4) {
+        this.scrollLeft = this.nowIndex * 60;
+      }
     },
-    data() {
-      return {
-        categoryId: "",
-        nowIndex: 0,
-        goodsList: [],
-        navData: [],
-        currentNav: {},
-        scrollLeft: 0
-      };
-    },
-    components: {},
-    methods: {
-      initData() {
-        this.categoryId = ""
-        this.nowIndex = 0
-        this.goodsList = []
-        this.navData = []
-        this.currentNav = {}
-        this.scrollLeft = 0
-      },
-      async changeTab(index, id) {
-        this.nowIndex = index;
-        const listdata = await get("/goods/goodsList", {
-          categoryId: id
-        });
-        this.goodsList = listdata.data;
-        this.currentNav = listdata.currentNav;
-        //需要让导航滚动到可见区域
-        if (this.nowIndex > 4) {
-          this.scrollLeft = this.nowIndex * 60;
-        }
-      },
-      async getAllData() {
+    async getAllData() {
+      try {
         const navdata = await get("/category/categoryNav", {
           id: this.categoryId
         });
@@ -91,19 +90,23 @@
           categoryId: this.categoryId
         });
         this.goodsList = listdata.data;
-      },
-      goodsDetail(id) {
-        console.log(id)
-        wx.navigateTo({
-          url: "/pages/goods/main?id=" + id
+      } catch (error) {
+        wx.showToast({
+          title: "数据获取失败",
+          icon: "loading"
         });
       }
     },
-    computed: {}
-  };
-
+    goodsDetail(id) {
+      console.log(id);
+      wx.navigateTo({
+        url: "/pages/goods/main?id=" + id
+      });
+    }
+  },
+  computed: {}
+};
 </script>
 <style lang='scss' scoped>
-  @import "./style";
-
+@import "./style";
 </style>

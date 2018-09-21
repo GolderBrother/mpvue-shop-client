@@ -37,7 +37,7 @@
 import { get } from "../../utils";
 export default {
   onShow() {
-    wx.setNavigationBarTitle({title:"分类"})
+    wx.setNavigationBarTitle({ title: "分类" });
   },
   mounted() {
     //获取列表数据
@@ -66,8 +66,15 @@ export default {
       this.detailData = data.data.currentOne;
     },
     async getListData() {
-      const data = await get("/category/indexaction");
-      this.listData = data.categoryList;
+      try {
+        const data = await get("/category/indexaction");
+        this.listData = data.categoryList;
+      } catch (error) {
+        wx.showToast({
+          title: "数据获取失败",
+          icon: "loading"
+        });
+      }
     },
     categoryList(id) {
       console.log("tiaozhuan");

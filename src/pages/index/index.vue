@@ -202,7 +202,7 @@ export default {
     },
     openSetting(e) {
       if (e.detail.authSetting["scope.userLocation"]) {
-        console.log(e.detail.authSetting["scope.userLocation"])
+        console.log(e.detail.authSetting["scope.userLocation"]);
         //e.detail.authSetting  这个是小程序的，mpvue自己打断点找一下吧，原谅我有点懒
         //if (!res.authSetting["scope.userInfo"] || !res.authSetting["scope.userLocation"])
       }
@@ -214,7 +214,7 @@ export default {
         // type: 'wgs84',
         success: function(res) {
           let latitude, longitude;
-          console.log("wxGetLocation",res);
+          console.log("wxGetLocation", res);
           latitude = res.latitude.toString();
           longitude = res.longitude.toString();
           wx.request({
@@ -232,7 +232,7 @@ export default {
               // _this.province = res.data.result.address_component.province;
               // _this.city = res.data.result.address_component.city;
               // _this.district = res.data.result.address_component.district;
-              console.log("getLocation success",res);
+              console.log("getLocation success", res);
               const { locality } = res.data.result.address_component;
               _this.update({ cityName: locality });
               //_this.count();
@@ -251,22 +251,30 @@ export default {
       });
     },
     async getData() {
-      const {
-        banner,
-        channel,
-        brandList,
-        newGoods,
-        hotGoods,
-        topicList,
-        newCategoryList
-      } = await get("/index/index");
-      this.banner = banner;
-      this.channel = channel;
-      this.brandList = brandList;
-      this.newGoods = newGoods;
-      this.hotGoods = hotGoods;
-      this.topicList = topicList;
-      this.newCategoryList = newCategoryList;
+      try {
+        const {
+          banner,
+          channel,
+          brandList,
+          newGoods,
+          hotGoods,
+          topicList,
+          newCategoryList
+        } = await get("/index/index");
+        this.banner = banner;
+        this.channel = channel;
+        this.brandList = brandList;
+        this.newGoods = newGoods;
+        this.hotGoods = hotGoods;
+        this.topicList = topicList;
+        this.newCategoryList = newCategoryList;
+      } catch (error) {
+        console.log(error)
+        wx.showToast({
+          title:"数据获取失败",
+          icon: 'loading',
+        })
+      }
     },
     goodsDetail(id) {
       wx.navigateTo({
