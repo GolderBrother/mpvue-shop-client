@@ -9,12 +9,20 @@ const store = new Vuex.Store({
   state: {
     count: 0
   },
+  action:{
+    increate:({commit,state}) => {
+      commit("INCREATE",state) 
+    },
+    decreate:({commit,state}) => {
+      commit("DECREATE",state)
+    }
+  },
   mutations: {
-    increment: (state) => {
+    INCREATE: (state) => {
       const obj = state
       obj.count += 1
     },
-    decrement: (state) => {
+    DECREATE: (state) => {
       const obj = state
       obj.count -= 1
     }

@@ -7,7 +7,7 @@
     </div>
     <div class="cartlist">
       <!--  -->
-      <div class="item" @touchstart="startMove" @touchmove="deleteGoods" @touchend="endMove" :data-index="index" v-for="(item,index) in listData"
+      <div class="item" @click="goGoodsDetail(item.goods_id)" @touchstart="startMove" @touchmove="deleteGoods" @touchend="endMove" :data-index="index" v-for="(item,index) in listData"
         :key="index">
         <div class="con" :style="item.textStyle">
           <div class="left">
@@ -84,10 +84,10 @@ export default {
   methods: {
     initTextStyle() {
       //滑动之前先初始化数据
-      for (var i = 0; i < this.listData.length; i++) {
-        this.listData[i].textStyle = "";
-        this.listData[i].textStyle1 = "";
-      }
+      this.listData.forEach((item,index) => {
+        item.textStyle = "";
+        item.textStyle1 = "";
+      });
     },
     startMove(e) {
       this.initTextStyle();
@@ -97,7 +97,8 @@ export default {
     deleteGoods(e) {
       //滑动之前先初始化样式数据
       this.initTextStyle();
-      var index = e.currentTarget.dataset.index;
+      // 获取自定义属性值
+      const index = e.currentTarget.dataset.index;
       console.log(index);
       if (this.X <= -100) {
         this.flag = true;
@@ -132,7 +133,6 @@ export default {
           this.tranX
         }rpx);`;
         // transform:'translateX(' + tranX + 'rpx)'
-        console.log("heyushuo");
 
         console.log(this.listData[index].textStyle);
 
@@ -151,7 +151,7 @@ export default {
       // }
     },
     endMove(e) {
-      var index = e.currentTarget.dataset.index;
+      const index = e.currentTarget.dataset.index;
       if (this.X > -50) {
         this.tranX1 = 0;
         this.tranX = 0;
@@ -172,7 +172,9 @@ export default {
         }rpx);`;
       }
     },
+    // 下单
     async orderDown() {
+      console.log(this.Listids)
       if (this.Listids.length == 0) {
         wx.showToast({
           title: "请选择商品",
@@ -182,15 +184,14 @@ export default {
         return false;
       }
       // 去掉数组中空的false的
-      var newgoodsid = [];
-      for (let i = 0; i < this.Listids.length; i++) {
-        const element = this.Listids[i];
-        if (element) {
-          newgoodsid.push(element);
+      let newgoodsid = [];
+      this.Listids.forEach((item,index) => {
+        if (item) {
+          newgoodsid.push(item);
         }
-      }
-      var goodsId = newgoodsid.join(",");
-      const data = await post("/order/submitAction", {
+      }); 
+      let goodsId = newgoodsid.join(",");
+      const {data} = await post("/order/submitAction", {
         goodsId: goodsId,
         openId: this.openId,
         allPrise: this.allPrise
@@ -201,37 +202,39 @@ export default {
         });
       }
     },
+    // 删除商品
     async delGoods(id, index) {
-      var _this = this;
       wx.showModal({
         title: "",
         content: "是否要删除该商品",
-        success: function(res) {
+        success: async (res) => {
           if (res.confirm) {
-            _this.Listids.splice(index, 1);
-            const data = get("/cart/deleteAction", {
+            this.Listids.splice(index, 1);
+            const { data } = await get("/cart/deleteAction", {
               id: id
-            }).then(() => {
-              _this.getListData();
             });
+            if(data){
+              this.getListData();
+            }
           } else if (res.cancel) {
             console.log("用户点击取消");
             //滑动之前先初始化样式数据
-            _this.initTextStyle();
+            this.initTextStyle();
           }
         }
       });
     },
+    // 获取购物车商品列表
     async getListData() {
       try {
-        const data = await get("/cart/cartList", {
+        const { data } = await get("/cart/cartList", {
           openId: this.openId
         });
-        for (var i = 0; i < data.data.length; i++) {
-          data.data[i].textStyle = "";
-          data.data[i].textStyle1 = "";
-        }
-        this.listData = data.data;
+        data.forEach((item,index) => {
+          item.textStyle = "";
+          item.textStyle1 = "";
+        });
+        this.listData = data;
       } catch (error) {
         wx.showToast({
           title:"数据获取失败",
@@ -239,20 +242,19 @@ export default {
         });
       }
     },
+    // 全选
     allCheck() {
-      //先清空
+      //先清空所有
       this.Listids = [];
       if (this.allcheck) {
         this.allcheck = false;
       } else {
         console.log("选择全部");
-
         this.allcheck = true;
         //循环遍历所有的商品id
-        for (let i = 0; i < this.listData.length; i++) {
-          const element = this.listData[i];
-          this.Listids.push(element.goods_id);
-        }
+        this.listData.forEach((item,index) => {
+          this.Listids.push(item.goods_id);
+        });
       }
     },
     change(e) {},
@@ -262,31 +264,32 @@ export default {
       } else {
         this.$set(this.Listids, index, id);
       }
+    },
+    goGoodsDetail(goodsId) {
+      wx.navigateTo({
+        url: `/pages/goods/main?id=${goodsId}`
+      });
     }
   },
   computed: {
+    // 计算选中的商品数
     isCheckedNumber() {
       let number = 0;
-      for (let i = 0; i < this.Listids.length; i++) {
-        if (this.Listids[i]) {
-          number++;
-        }
-      }
-      if (number == this.listData.length && number != 0) {
-        this.allcheck = true;
-      } else {
-        this.allcheck = false;
-      }
+      this.Listids.forEach(item => {
+        if(item) number++;
+      })
+      this.allcheck = (number == this.listData.length && number != 0) ? true : false;
       return number;
     },
+    // 计算总价
     allPrise() {
-      var Prise = 0;
-      for (let i = 0; i < this.Listids.length; i++) {
-        if (this.Listids[i]) {
-          Prise =
-            Prise + this.listData[i].retail_price * this.listData[i].number;
+      let Prise = 0;
+      this.Listids.forEach((item,i) => {
+        if(item){
+          const goodsData = this.listData[i]; 
+          Prise += goodsData.retail_price * goodsData.number;
         }
-      }
+      })
       return Prise;
     }
   }

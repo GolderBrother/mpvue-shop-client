@@ -53,7 +53,9 @@
       overflow: hidden;
       text-overflow: ellipsis;
       white-space: nowrap;
-      align-self: flex-start;
+      &.asf{
+        align-self: flex-start;
+      }
       .moren {
         width: 60rpx;
         height: 30rpx;

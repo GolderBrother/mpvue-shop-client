@@ -6,7 +6,7 @@
       <div v-if="listData.length!=0" class="item">
         <div class="list" @touchstart="startMove" :data-index="index" @touchmove="deleteGoods" @touchend="endMove" v-for="(item, index) in listData" :key="index">
           <div class="addresslist" :style="item.textStyle">
-            <div>
+            <div :class="{ asf:item.is_default }">
               <span>{{item.name}}</span>
               <div v-if="item.is_default" class="moren">
                 默认
@@ -76,10 +76,11 @@ export default {
   methods: {
     initTextStyle() {
       //滑动之前先初始化数据
-      for (var i = 0; i < this.listData.length; i++) {
-        this.listData[i].textStyle = "";
-        this.listData[i].textStyle1 = "";
-      }
+      console.log("initTextStyle");
+      this.listData.forEach((item,index) => {
+        item.textStyle = "";
+        item.textStyle1 = "";
+      });
     },
     startMove(e) {
       this.initTextStyle();
@@ -87,17 +88,20 @@ export default {
       this.startY = e.touches[0].pageY;
     },
     async delAddress(id) {
-      var _this = this;
+      const _this = this;
       wx.showModal({
         title: "",
         content: "是否要删除该收货地址",
-        success: function(res) {
+        success: async res =>  {
           if (res.confirm) {
-            const data = get("/address/deleteAction", {
+            const { data,msg="" } = await get("/address/deleteAction", {
               id: id
-            }).then(() => {
-              _this.getAddressList();
             });
+            if(data){
+              await _this.getAddressList();
+            }else{
+              console.log(msg)
+            }
           } else if (res.cancel) {
             console.log("用户点击取消");
             //滑动之前先初始化样式数据
@@ -203,16 +207,15 @@ export default {
       });
     },
     async getAddressList() {
-      var _this = this;
-      const data = await get("/address/getListAction", {
+      const _this = this;
+      const { data } = await get("/address/getListAction", {
         openId: _this.openId
       });
-      for (var i = 0; i < data.data.length; i++) {
-        data.data[i].textStyle = "";
-        data.data[i].textStyle1 = "";
-      }
-      this.listData = data.data;
-      console.log(this.listData);
+      data.forEach((item,index) => {
+        item.textStyle = "";
+        item.textStyle1 = "";
+      })
+      this.listData = data;
     },
     wxaddress(index) {
       if (index == 1) {
@@ -222,9 +225,9 @@ export default {
       } else {
         wx.chooseAddress({
           success: function(res) {
-            var res = encodeURIComponent(JSON.stringify(res));
+            let resEncode = encodeURIComponent(JSON.stringify(res));
             wx.navigateTo({
-              url: "/pages/addaddress/main?res=" + res
+              url: "/pages/addaddress/main?res=" + resEncode
             });
           }
         });

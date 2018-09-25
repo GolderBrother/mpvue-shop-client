@@ -3,6 +3,7 @@
     <div class="head">
       <div>
         <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/search2-2fb94833aa.png" alt="">
+        <!-- @focus:输入框聚焦时触发 @input:键盘输入时触发 confirm 键盘按下确认键后触发-->
         <input type="text" confirm-type="search" focus="true" v-model="words" @focus="inputFocus" @input="tipsearch" @confirm="searchWords"
           placeholder="商品搜索">
         <!-- <input name="input" class="keywrod" focus="true" value="{{keyword}}" confirm-type="search" bindinput="inputChange" bindfocus="inputFocus" bindconfirm="onKeywordConfirm" confirm-type="search" placeholder="{{defaultKeyword.keyword}}" /> -->
@@ -118,6 +119,7 @@
         this.listData = [];
         this.tipsData = [];
       },
+      // 输入框聚焦时触发
       inputFocus() {
         //商品清空
         this.listData = [];
@@ -146,32 +148,33 @@
         const data = await post("/search/clearhistoryAction", {
           openId: this.openid
         });
-        console.log(data);
         if (data) {
           this.historyData = [];
         }
       },
       async searchWords(e) {
-        var vaule = e.currentTarget.dataset.value;
-        this.words = vaule || this.words;
+        this.words = e.target.value || this.words;
+        console.log(this.words);
+        // 添加搜索关键词到搜索历史中
         const data = await post("/search/addhistoryaction", {
           openId: this.openid,
-          keyword: vaule || this.words
+          keyword: this.words
         });
-        console.log(data);
         //获取历史数据
         this.getHotData();
         //获取商品列表
         this.getlistData();
       },
       async getHotData(first) {
-        const data = await get("/search/indexaction?openId=" + this.openid);
-        this.hotData = data.hotKeywordList;
-        this.historyData = data.historyData;
+        const { hotKeywordList, historyData } = await get("/search/indexaction?openId=" + this.openid);
+        this.hotData = hotKeywordList;
+        this.historyData = historyData;
       },
+      // 展示搜索提示信息 键盘输入时触发
       async tipsearch(e) {
+        const keywords = e.target.value || this.words;
         const data = await get("/search/helperaction", {
-          keyword: this.words
+          keyword: keywords
         });
         this.tipsData = data.keywords;
       },

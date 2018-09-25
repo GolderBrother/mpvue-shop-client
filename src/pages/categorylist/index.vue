@@ -56,29 +56,32 @@ export default {
     },
     async changeTab(index, id) {
       this.nowIndex = index;
-      const listdata = await get("/goods/goodsList", {
+      const { data, currentNav } = await get("/goods/goodsList", {
         categoryId: id
       });
-      this.goodsList = listdata.data;
-      this.currentNav = listdata.currentNav;
+      this.goodsList = data;
+      this.currentNav = currentNav;
       //需要让导航滚动到可见区域
       if (this.nowIndex > 4) {
         this.scrollLeft = this.nowIndex * 60;
+      }else {
+        this.scrollLeft = 0;
       }
     },
+    // 获取所有的列表数据
     async getAllData() {
       try {
-        const navdata = await get("/category/categoryNav", {
+        const { navData,currentNav } = await get("/category/categoryNav", {
           id: this.categoryId
         });
-        this.navData = navdata.navData;
-        this.currentNav = navdata.currentNav;
-        for (let i = 0; i < this.navData.length; i++) {
-          const id = this.navData[i].id;
-          if (id == this.currentNav.id) {
-            this.nowIndex = i;
-          }
-        }
+        this.navData = navData;
+        this.currentNav = currentNav;
+        this.navData.forEach((item,index) => {
+            const { id } = item;
+            if(id === this.currentNav.id){
+              this.nowIndex = index;
+            }
+        })
 
         //需要让导航滚动到可见区域
         if (this.nowIndex > 4) {
@@ -97,10 +100,11 @@ export default {
         });
       }
     },
+    // 跳转商品详情
     goodsDetail(id) {
       console.log(id);
       wx.navigateTo({
-        url: "/pages/goods/main?id=" + id
+        url: `/pages/goods/main?id=${id}`
       });
     }
   },

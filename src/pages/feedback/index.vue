@@ -30,7 +30,6 @@
       if (login()) {
         this.userInfo = login();
         console.log(this.userInfo);
-
       }
     },
     data() {
@@ -44,12 +43,13 @@
     methods: {
 
       async submitMes() {
-        var _this = this;
+        const _this = this;
+        const { userInfo:{openId,nickName},content,phone } = this;
         const data = await post('/feedback/submitAction', {
-          openId: this.userInfo.openId,
-          name: this.userInfo.nickName,
-          content: this.content,
-          phone: this.phone
+          openId: openId,
+          name: nickName,
+          content: content,
+          phone: phone
         })
         if (data.data) {
           wx.showToast({

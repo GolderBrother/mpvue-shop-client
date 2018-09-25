@@ -9,7 +9,7 @@
     </div>
     <div class="content">
       <scroll-view class="left" scroll-y="true">
-        <div class="iconText" @click="selectitem(item.id,index)" v-for="(item, index) in listData" :class="[index==nowIndex?'active':'']" :key="index">
+        <div class="iconText" @click="selectItem(item.id,index)" v-for="(item, index) in listData" :class="[index==nowIndex?'active':'']" :key="index">
           {{item.name}}
         </div>
       </scroll-view>
@@ -43,10 +43,11 @@ export default {
     //获取列表数据
     this.getListData();
     //获取默认右侧数据
-    this.selectitem(this.id, this.nowIndex);
+    this.selectItem(this.id, this.nowIndex);
   },
   data() {
     return {
+      // 一开始的一级分类ID
       id: "1005000",
       nowIndex: 0,
       listData: [],
@@ -58,13 +59,17 @@ export default {
     tosearch() {
       wx.navigateTo({ url: "/pages/search/main" });
     },
-    async selectitem(id, index) {
+    // 选中一级分类，获取二级分类
+    async selectItem(id, index) {
       this.nowIndex = index;
-      const data = await get("/category/currentaction", {
+      const { data: { currentOne } } = await get("/category/currentaction", {
         id: id
       });
-      this.detailData = data.data.currentOne;
+      if (currentOne) {
+        this.detailData = currentOne;
+      }
     },
+    // 获取所有的一级分类
     async getListData() {
       try {
         const data = await get("/category/indexaction");
@@ -76,11 +81,10 @@ export default {
         });
       }
     },
+    // 点击二级分类，跳转二级分类列表页
     categoryList(id) {
-      console.log("tiaozhuan");
-
       wx.navigateTo({
-        url: "../categorylist/main?id=" + id
+        url: `../categorylist/main?id=${id}`
       });
     }
   },

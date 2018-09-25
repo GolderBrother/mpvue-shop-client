@@ -31,10 +31,11 @@ export default {
   },
   methods: {
     increment () {
-      store.commit('increment')
+      // store.dispatch("increate")
+      store.commit('INCREATE')
     },
     decrement () {
-      store.commit('decrement')
+      store.commit('DECREATE')
     }
   }
 }

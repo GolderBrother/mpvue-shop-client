@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="cartlist">
-      <div class="item" v-for="(item,index) in listData" :key="index">
+      <div class="item" v-for="(item,index) in listData" :key="index" @click="goGoodsDetail(item.goods_id)">
         <div class="con">
           <div class="left">
             <div class="img">
@@ -68,72 +68,68 @@
 </template>
 
 <script>
-  import {
-    get,
-    post,
-    login,
-    getStorageOpenid
-  } from "../../utils";
-  export default {
-    onShow() {
-      if (wx.getStorageSync("addressId")) {
-        this.addressId = wx.getStorageSync("addressId");
-      }
-      this.openId = getStorageOpenid();
+import { get, post, login, getStorageOpenid } from "../../utils";
+export default {
+  onShow() {
+    if (wx.getStorageSync("addressId")) {
+      this.addressId = wx.getStorageSync("addressId");
+    }
+    this.openId = getStorageOpenid();
 
-      this.getDetail();
+    this.getDetail();
+  },
+  created() {},
+  mounted() {},
+  data() {
+    return {
+      addressId: "",
+      openId: "",
+      allprice: "",
+      listData: [],
+      address: {}
+    };
+  },
+  components: {},
+  methods: {
+    pay() {
+      wx.showToast({
+        title: "支付功能暂未开发", //提示的内容,
+        icon: "none", //图标,
+        duration: 1500, //延迟时间,
+        mask: false, //显示透明蒙层，防止触摸穿透,
+        success: res => {}
+      });
     },
-    created() {},
-    mounted() {},
-    data() {
-      return {
-        addressId: "",
-        openId: "",
-        allprice: "",
-        listData: [],
-        address: {}
-      };
+    toAddressList() {
+      wx.navigateTo({
+        url: "/pages/addressSelect/main"
+      });
     },
-    components: {},
-    methods: {
-      pay() {
-        wx.showToast({
-          title: "支付功能暂未开发", //提示的内容,
-          icon: "none", //图标,
-          duration: 1500, //延迟时间,
-          mask: false, //显示透明蒙层，防止触摸穿透,
-          success: res => {}
-        });
-      },
-      toAddressList() {
-        wx.navigateTo({
-          url: "/pages/addressSelect/main"
-        });
-      },
-      toAdd() {
-        wx.navigateTo({
-          url: "/pages/addaddress/main"
-        });
-      },
-      async getDetail() {
-        const data = await get("/order/detailAction", {
-          openId: this.openId,
-          addressId: this.addressId
-        });
-        console.log(data);
-
-        if (data) {
-          this.allprice = data.allPrise;
-          this.listData = data.goodsList;
-          this.address = data.address;
-        }
+    toAdd() {
+      wx.navigateTo({
+        url: "/pages/addaddress/main"
+      });
+    },
+    async getDetail() {
+      const data = await get("/order/detailAction", {
+        openId: this.openId,
+        addressId: this.addressId
+      });
+      if (data) {
+        this.allprice = data.allPrise;
+        this.listData = data.goodsList;
+        this.address = data.address;
       }
     },
-    computed: {}
-  };
-
+    goGoodsDetail(goodsId) {
+      wx.navigateTo({
+        url: `/pages/goods/main?id=${goodsId}`
+      });
+    }
+  },
+  computed: {}
+};
 </script>
 <style lang='scss' scoped>
-  @import "./style";
-
+@import "./style";
 </style>

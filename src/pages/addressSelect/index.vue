@@ -66,14 +66,14 @@ export default {
     },
     async getAddressList() {
       var _this = this;
-      const data = await get("/address/getListAction", {
+      const { data } = await get("/address/getListAction", {
         openId: _this.openId
       });
-      for (var i = 0; i < data.data.length; i++) {
-        data.data[i].textStyle = "";
-        data.data[i].textStyle1 = "";
-      }
-      this.listData = data.data;
+      data.forEach((item, index) => {
+        item.textStyle = "";
+        item.textStyle1 = "";
+      });
+      this.listData = data;
       console.log(this.listData);
     },
     wxaddress(index) {
@@ -84,9 +84,9 @@ export default {
       } else {
         wx.chooseAddress({
           success: function(res) {
-            var res = encodeURIComponent(JSON.stringify(res));
+            let resEncode = encodeURIComponent(JSON.stringify(res));
             wx.navigateTo({
-              url: "/pages/addaddress/main?res=" + res
+              url: "/pages/addaddress/main?res=" + resEncode
             });
           }
         });

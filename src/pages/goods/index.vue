@@ -282,6 +282,7 @@ export default {
           //添加成功后
           if (data) {
             this.allnumber = this.allnumber + this.number;
+            this.showpop = false;
             wx.showToast({
               title: "添加购物车成功",
               icon: "success",
@@ -294,6 +295,7 @@ export default {
       }
     },
     toCart() {
+      // 跳转购物车，因为这是 tab 页面，因此跳转方式为 wx.switchTab, wx.navigateTo 这方式不行
       wx.switchTab({
         url: "/pages/cart/main"
       });

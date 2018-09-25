@@ -21,7 +21,6 @@
   export default {
     onShow() {
       this.openId = getStorageOpenid();
-      console.log(this.openId)
       this.getlist();
     },
     created() {},
@@ -44,7 +43,7 @@
       },
       goodsDetail(id) {
         wx.navigateTo({
-          url: "/pages/goods/main?id=" + id
+          url: `/pages/goods/main?id=${id}`
         });
       },
     },

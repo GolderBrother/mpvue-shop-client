@@ -23,11 +23,19 @@ export function formatTime(date) {
 
 // const host = 'https://www.heyuhsuo.xyz/heyushuo';
 import config from '@/api/config';
-const host = config.API_HOST;  // 开发接口地址
+const host = config.API_HOST; // 开发接口地址
 export {
   host
 }
-//请求封装成Promise对象返回
+
+/**
+ * 请求封装成Promise对象返回
+ * @param {*} url 
+ * @param {*} method 
+ * @param {*} data 
+ * @param {*} header 
+ * @return {Promise}
+ */
 function request(url, method, data, header = {}) {
   wx.showLoading({
     title: '加载中' //数据请求前loading
@@ -43,11 +51,12 @@ function request(url, method, data, header = {}) {
       },
       success: function (res) {
         wx.hideLoading();
+        console.log("request",res)
         resolve(res.data)
       },
       fail: function (error) {
         wx.hideLoading();
-        reject(false)
+        reject(error)
       },
       complete: function () {
         wx.hideLoading();
@@ -55,12 +64,76 @@ function request(url, method, data, header = {}) {
     })
   })
 }
-export function get(url, data) {
-  return request(url, 'GET', data)
+/**
+ * get 请求 对请求响应前拦截，处理异常错误等
+ * @param {string} url 
+ * @param {Object} data 
+ * @return {Promise} 
+ */
+export const get = async(url, data) => {
+  try {
+    const res = await request(url, 'GET', data);
+    return res;
+  } catch (error) {
+    const { errMsg } = error;
+    wx.showToast({
+      icon:'none',
+      title:errMsg
+    });
+    return {
+      data: false,
+      msg: errMsg
+    }
+  }
 }
-export function post(url, data) {
-  return request(url, 'POST', data)
+
+// export function get(url, data){
+//   return request(url, 'GET', data);
+// }
+
+/**
+ * post 请求 对请求响应前拦截，处理异常错误等
+ * @param {string} url 
+ * @param {Object} data 
+ * @return {Promise}
+ */
+export const post = async (url, data) => {
+  try {
+    const res = await request(url, 'POST', data);
+    return res;
+  } catch (error) {
+    const { errMsg } = error;
+    wx.showToast({
+      icon:'none',
+      title:errMsg
+    });
+    return {
+      data: false,
+      msg: errMsg
+    };
+  }
 }
+// export function post(url, data){
+//   return request(url, 'POST', data);
+// }
+// 这种函数声明的方法捕获不到 异常错误
+// export function post(url, data) {
+//   // return request(url, 'POST', data);
+//   return new Promise((resolve, reject) => {
+//     try {
+//       const res = request(url, 'POST', data);
+//       console.log(res);
+//       resolve(res);
+
+//     } catch (error) {
+//       console.log(error);
+//       reject({
+//         data: false,
+//         msg: error.message
+//       });
+//     }
+//   });
+// }
 
 //-------------------------------------------------------------------------请求的封装
 

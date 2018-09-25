@@ -156,7 +156,7 @@ export default {
   methods: {
     ...mapMutations(["update"]),
     toMappage() {
-      var _this = this;
+      const _this = this;
       // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
       wx.getSetting({
         success(res) {
@@ -177,8 +177,8 @@ export default {
     },
     // 定位：获取当前所在城市 需要本地开启国外服务器代理才能访问得到
     getCityName2() {
-      var _this = this;
-      var myAmapFun = new amapFile.AMapWX({
+      const _this = this;
+      let myAmapFun = new amapFile.AMapWX({
         key: "e545e7f79a643f23aef187add14e4548"
       });
       myAmapFun.getRegeo({
@@ -209,7 +209,7 @@ export default {
     },
     // https://blog.csdn.net/weixin_36934930/article/details/80744457
     getCityName() {
-      let _this = this;
+      const _this = this;
       wx.getLocation({
         // type: 'wgs84',
         success: function(res) {
@@ -270,10 +270,10 @@ export default {
         this.newCategoryList = newCategoryList;
       } catch (error) {
         console.log(error)
-        wx.showToast({
-          title:"数据获取失败",
-          icon: 'loading',
-        })
+        // wx.showToast({
+        //   title:"数据获取失败",
+        //   icon: 'loading',
+        // })
       }
     },
     goodsDetail(id) {
