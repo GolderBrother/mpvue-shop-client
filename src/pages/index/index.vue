@@ -126,7 +126,7 @@
 <script>
 import amapFile from "../../utils/amap-wx";
 import { get } from "../../utils";
-import { mapState, mapMutations } from "vuex";
+import { mapGetters, mapActions } from "vuex";
 export default {
   onLoad() {
     this.getCityName();
@@ -135,7 +135,7 @@ export default {
     wx.setNavigationBarTitle({ title: "首页" });
   },
   computed: {
-    ...mapState(["cityName"])
+    ...mapGetters(["cityName"])
   },
   created() {},
   mounted() {
@@ -154,7 +154,9 @@ export default {
   },
   components: {},
   methods: {
-    ...mapMutations(["update"]),
+    ...mapActions([
+      "update"  //  将 `this.update()` 映射为 `this.$store.dispatch('update')`
+    ]),
     toMappage() {
       const _this = this;
       // 可以通过 wx.getSetting 先查询一下用户是否授权了 "scope.record" 这个 scope
@@ -233,8 +235,8 @@ export default {
               // _this.city = res.data.result.address_component.city;
               // _this.district = res.data.result.address_component.district;
               console.log("getLocation success", res);
-              const { locality } = res.data.result.address_component;
-              _this.update({ cityName: locality });
+              const { city="北京市" } = res.data.result.address_component;
+              _this.update({ cityName: city });
               //_this.count();
               // console.log(res.data.result.address_component.nation,res.data.result.address_component.province,res.data.result.address_component.city,res.data.result.address_component.district)
             }

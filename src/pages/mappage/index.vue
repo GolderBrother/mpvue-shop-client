@@ -20,7 +20,7 @@
 
 <script>
 import amapFile from "../../utils/amap-wx";
-import { mapMutations } from "vuex";
+import { mapActions } from "vuex";
 export default {
   onLoad() {
     this.initData();
@@ -39,7 +39,7 @@ export default {
   },
   components: {},
   methods: {
-    ...mapMutations(["update"]),
+    ...mapActions(["update"]),
     bindInput: function(e) {
       var _this = this;
       var keywords = this.keywords;
@@ -65,6 +65,7 @@ export default {
       wx.navigateBack({
         delta: 1 //返回的页面数，如果 delta 大于现有页面数，则返回到首页,
       });
+      console.log(this.$store.getters.cityName);
     },
     getMapaddress() {
       var _this = this;

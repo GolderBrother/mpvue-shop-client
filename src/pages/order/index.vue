@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="cartlist">
-      <div class="item" v-for="(item,index) in listData" :key="index" @click="goGoodsDetail(item.goods_id)">
+      <div class="item" v-for="(item,index) in listData" :key="index" @click="goodsDetail(item.goods_id)">
         <div class="con">
           <div class="left">
             <div class="img">
@@ -71,11 +71,13 @@
 import { get, post, login, getStorageOpenid } from "../../utils";
 export default {
   onShow() {
+    wx.setNavigationBarTitle({
+      title:"我的订单"
+    });
     if (wx.getStorageSync("addressId")) {
       this.addressId = wx.getStorageSync("addressId");
     }
     this.openId = getStorageOpenid();
-
     this.getDetail();
   },
   created() {},
@@ -121,7 +123,7 @@ export default {
         this.address = data.address;
       }
     },
-    goGoodsDetail(goodsId) {
+    goodsDetail(goodsId) {
       wx.navigateTo({
         url: `/pages/goods/main?id=${goodsId}`
       });

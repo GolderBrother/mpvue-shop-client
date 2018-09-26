@@ -75,7 +75,7 @@
         <div class="line"></div>
       </div>
       <div class="sublist">
-        <div @click="togoodsDetail(subitem.id)" v-for="(subitem, subindex) in productList" :key="subindex">
+        <div @click="toGoodsDetail(subitem.id)" v-for="(subitem, subindex) in productList" :key="subindex">
           <img :src="subitem.list_pic_url" alt="">
           <p>{{subitem.name}}</p>
           <p>￥{{subitem.retail_price}}</p>
@@ -137,7 +137,7 @@
 </template>
 
 <script>
-import { get, post, toLogin, login, getStorageOpenid } from "../../utils";
+import { get, post, toLogin, login, getStorageOpenid } from "@/utils";
 import wxParse from "mpvue-wxparse";
 
 export default {
@@ -149,18 +149,15 @@ export default {
     }
     this.id = this.$root.$mp.query.id;
     this.openId = getStorageOpenid();
-    this.goodsDetail();
+    this.handleGoodsDetail();
   },
   //商品转发
   onShareAppMessage() {
-    console.log(this.info.name);
-    console.log(this.info.id);
-    console.log(this.gallery[0].img_url);
-
+    const { info: { name, id }, gallery} = this;
     return {
-      title: this.info.name,
-      path: "/pages/goods/main?id=" + this.info.id,
-      imageUrl: this.gallery[0].img_url //拿第一张商品的图片
+      title: name,
+      path: `/pages/goods/main?id=${id}`,
+      imageUrl: gallery[0].img_url //拿第一张商品的图片
     };
   },
   mounted() {},
@@ -206,7 +203,7 @@ export default {
       this.goodsId = "";
       this.allPrise = "";
     },
-    togoodsDetail(id) {
+    toGoodsDetail(id) {
       wx.navigateTo({
         url: "/pages/goods/main?id=" + id
       });
@@ -303,7 +300,7 @@ export default {
       //   url: "/pages/cart/main"
       // });
     },
-    async goodsDetail() {
+    async handleGoodsDetail() {
       const data = await get("/goods/detailaction", {
         id: this.id,
         openId: this.openId

@@ -37,7 +37,7 @@ export default {
     return {
       listData: [],
       page: 1,
-      total: ""
+      total: 0
     };
   },
   components: {},

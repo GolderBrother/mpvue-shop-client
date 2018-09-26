@@ -13,7 +13,7 @@
       </label>
       <input type="text" v-model="phone" placeholder="邮箱/手机号/微信号">
     </div>
-    <div @click="submitMes" class="bottom">
+    <div @click="submitComment" class="bottom">
       提交
     </div>
   </div>
@@ -41,8 +41,7 @@
     },
     components: {},
     methods: {
-
-      async submitMes() {
+      async submitComment() {
         const _this = this;
         const { userInfo:{openId,nickName},content,phone } = this;
         const data = await post('/feedback/submitAction', {

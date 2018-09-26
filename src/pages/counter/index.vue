@@ -12,6 +12,7 @@
 
 <script>
 // Use Vuex
+
 import store from './store'
 
 export default {
@@ -35,6 +36,7 @@ export default {
       store.commit('INCREATE')
     },
     decrement () {
+      // store.dispatch("decreate")
       store.commit('DECREATE')
     }
   }

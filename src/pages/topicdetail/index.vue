@@ -19,7 +19,11 @@
 import { get } from "../../utils";
 import wxParse from "mpvue-wxparse";
 export default {
-  created() {},
+  onShow() {
+    wx.setNavigationBarTitle({
+      title:"专题"
+    });
+  },
   mounted() {
     this.id = this.$root.$mp.query.id;
     this.getListData();

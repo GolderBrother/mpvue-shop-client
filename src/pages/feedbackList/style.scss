@@ -1,0 +1,52 @@
+.increase-ellipsis {
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.feedback-list {
+  background-color: #fff;
+  &-wrapper {
+    .title {
+      padding: 10rpx 0;
+      text-align: center;
+      h2{
+          font-size: 32rpx;
+      }
+    }
+  }
+
+  &-box {
+    .content-box {
+      display: -webkit-box;
+      display: -ms-flexbox;
+      display: flex;
+      padding: 20rpx 40rpx;
+      flex-direction: column;
+
+      &:not(:last-child) {
+        border-bottom: 1px solid rgba(178, 186, 194, .15);
+      }
+
+      .meta-row {
+        color: #b2bac2;
+
+        .meta-point {
+          content: "\B7";
+          margin: 0 .4em;
+          color: #b2bac2;
+        }
+      }
+
+      .title-row {
+        margin: 15rpx 0;
+        font-weight: 600;
+        line-height: 1.2;
+        color: #2e3135;
+      }
+    }
+
+
+  }
+
+}

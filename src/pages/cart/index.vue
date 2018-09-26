@@ -11,7 +11,8 @@
         :key="index">
         <div class="con" :style="item.textStyle">
           <div class="left">
-            <div class="icon" @click="changeColor(index,item.goods_id)" :class="[ Listids[index] ? 'active' : '',{active:allcheck}]"></div>
+            <!-- @click.stop mpvue 阻止事件冒泡 -->
+            <div class="icon" @click.stop="changeColor(index,item.goods_id)" :class="[ Listids[index] ? 'active' : '',{active:allcheck}]"></div>
             <div class="img">
               <img :src="item.list_pic_url" alt="">
             </div>
@@ -230,16 +231,18 @@ export default {
         const { data } = await get("/cart/cartList", {
           openId: this.openId
         });
+        if (!data) return;
         data.forEach((item,index) => {
           item.textStyle = "";
           item.textStyle1 = "";
         });
         this.listData = data;
       } catch (error) {
-        wx.showToast({
-          title:"数据获取失败",
-          icon: 'loading',
-        });
+        console.log(error)
+        // wx.showToast({
+        //   title:"数据获取失败",
+        //   icon: 'loading',
+        // });
       }
     },
     // 全选

@@ -26,6 +26,7 @@ export default {
   },
   created() {},
   mounted() {
+    // 获取get提交的参数 /api?name=james
     if (this.$root.$mp.query.isHot) {
       this.isHot = this.$root.$mp.query.isHot;
     }
@@ -60,6 +61,7 @@ export default {
     },
     changeTab(index) {
       this.nowIndex = index;
+      // 排序
       if (index == 1) {
         this.order = this.order == "asc" ? "desc" : "asc";
       } else {

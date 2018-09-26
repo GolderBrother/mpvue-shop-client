@@ -44,6 +44,9 @@
 import { get, getStorageOpenid } from "../../utils";
 export default {
   onShow() {
+    wx.setNavigationBarTitle({
+      title: "我的地址"
+    });
     this.openId = getStorageOpenid();
     this.getAddressList();
   },

@@ -46,6 +46,7 @@ export default {
   },
   created() {},
   mounted() {
+    let navigationTitle = "增加地址";
     this.openId = getStorageOpenid();
     console.log(this.$root.$mp);
     const { id,res } = this.$root.$mp.query;
@@ -62,9 +63,13 @@ export default {
       this.detailaddress = detailInfo;
     }
     if (id) {
+      navigationTitle = "编辑地址";
       this.id = id;
       this.getDetail();
     }
+    wx.setNavigationBarTitle({
+      title:navigationTitle
+    });
   },
   data() {
     return {

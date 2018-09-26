@@ -14,44 +14,40 @@
 </template>
 
 <script>
-  import {
-    get,
-    getStorageOpenid
-  } from '../../utils';
-  export default {
-    onShow() {
-      this.openId = getStorageOpenid();
-      this.getlist();
+import { get, getStorageOpenid } from "../../utils";
+export default {
+  onShow() {
+    wx.setNavigationBarTitle({
+      title: "收藏"
+    });
+    this.openId = getStorageOpenid();
+    this.getlist();
+  },
+  created() {},
+  mounted() {},
+  data() {
+    return {
+      openId: "",
+      collectlist: []
+    };
+  },
+  components: {},
+  methods: {
+    async getlist() {
+      const data = await get("/collect/listAction", {
+        openId: this.openId
+      });
+      this.collectlist = data.collectGoodsList;
     },
-    created() {},
-    mounted() {
-
-    },
-    data() {
-      return {
-        openId: "",
-        collectlist: []
-      };
-    },
-    components: {},
-    methods: {
-      async getlist() {
-        const data = await get('/collect/listAction', {
-          openId: this.openId
-        })
-        this.collectlist = data.collectGoodsList;
-      },
-      goodsDetail(id) {
-        wx.navigateTo({
-          url: `/pages/goods/main?id=${id}`
-        });
-      },
-    },
-    computed: {}
-  };
-
+    goodsDetail(id) {
+      wx.navigateTo({
+        url: `/pages/goods/main?id=${id}`
+      });
+    }
+  },
+  computed: {}
+};
 </script>
 <style lang='scss' scoped>
-  @import "./style";
-
+@import "./style";
 </style>
