@@ -18,7 +18,7 @@
 </template>
 
 <script>
-import { get, toLogin, login } from "../../utils";
+import { get, toLogin, login } from "@/utils";
 import { mapGetters } from 'vuex';
 export default {
   onShow() {

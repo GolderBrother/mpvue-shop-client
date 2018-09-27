@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { get } from "../../utils";
+import { get } from "@/utils";
 export default {
   onLoad() {
     this.initData();

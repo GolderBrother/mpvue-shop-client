@@ -63,7 +63,7 @@
 </template>
 
 <script>
-import { post, get } from "../../utils";
+import { post, get } from "@/utils";
 export default {
   onLoad() {
     wx.setNavigationBarTitle({

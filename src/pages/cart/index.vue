@@ -58,7 +58,7 @@
 </template>
 
 <script>
-import { get, post, login, getStorageOpenid } from "../../utils";
+import { get, post, login, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
     wx.setNavigationBarTitle({ title: "购物车" });

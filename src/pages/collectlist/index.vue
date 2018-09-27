@@ -24,7 +24,7 @@
 </template>
 
 <script>
-import { get, getStorageOpenid } from "../../utils";
+import { get, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
     wx.setNavigationBarTitle({

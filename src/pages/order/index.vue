@@ -68,7 +68,8 @@
 </template>
 
 <script>
-import { get, post, login, getStorageOpenid } from "../../utils";
+import { isEmptyObj } from "@/utils/utils";
+import { get, post, login, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
     wx.setNavigationBarTitle({
@@ -112,15 +113,15 @@ export default {
         url: "/pages/addaddress/main"
       });
     },
-    async getDetail() {
-      const data = await get("/order/detailAction", {
+    async getDetail() { isEmptyObj
+      const { allPrise,goodsList,address } = await get("/order/detailAction", {
         openId: this.openId,
         addressId: this.addressId
       });
-      if (data) {
-        this.allprice = data.allPrise;
-        this.listData = data.goodsList;
-        this.address = data.address;
+      if (!isEmptyObj(address) && goodsList.length !== 0 && allPrise) {
+        this.allprice = allPrise;
+        this.listData = goodsList;
+        this.address = address;
       }
     },
     // 跳转商品详情

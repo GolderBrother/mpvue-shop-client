@@ -16,7 +16,7 @@
 </template>
 
 <script>
-import { get } from "../../utils";
+import { get } from "@/utils";
 import wxParse from "mpvue-wxparse";
 export default {
   onShow() {

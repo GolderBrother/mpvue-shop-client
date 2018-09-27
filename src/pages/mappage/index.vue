@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import amapFile from "../../utils/amap-wx";
+import amapFile from "@/utils/amap-wx";
 import { mapActions } from "vuex";
 export default {
   onLoad() {

@@ -34,7 +34,7 @@
 </template>
 
 <script>
-import { get } from "../../utils";
+import { get } from "@/utils";
 export default {
   onShow() {
     wx.setNavigationBarTitle({ title: "分类" });

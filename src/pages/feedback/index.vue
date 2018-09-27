@@ -23,7 +23,7 @@
   import {
     post,
     login,
-  } from '../../utils'
+  } from '@/utils'
   export default {
     mounted() {
       //判断是否登录获取用户信息

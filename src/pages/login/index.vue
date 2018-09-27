@@ -10,7 +10,7 @@
 <script>
   import {
     host
-  } from "../../utils";
+  } from "@/utils";
   var qcloud = require("wafer2-client-sdk/index.js");
   export default {
     created() {},

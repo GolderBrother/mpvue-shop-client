@@ -23,7 +23,7 @@
 </template>
 
 <script>
-import { get } from "../../utils";
+import { get } from "@/utils";
 export default {
   created() {},
   mounted() {

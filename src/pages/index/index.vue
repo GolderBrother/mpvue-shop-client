@@ -129,8 +129,8 @@
 </template>
 
 <script>
-import amapFile from "../../utils/amap-wx";
-import { get } from "../../utils";
+import amapFile from "@/utils/amap-wx";
+import { get } from "@/utils";
 import { mapGetters, mapActions } from "vuex";
 export default {
   onLoad() {

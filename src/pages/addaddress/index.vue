@@ -38,8 +38,8 @@
 </template>
 
 <script>
-import { get, post, getStorageOpenid } from "../../utils";
-import { isEmptyObj } from "../../utils/utils";
+import { get, post, getStorageOpenid } from "@/utils";
+import { isEmptyObj } from "@/utils/utils";
 export default {
   onLoad() {
     this.initData();
