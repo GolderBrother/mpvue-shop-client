@@ -7,37 +7,63 @@
     font-size: 36rpx;
     font-weight: bold;
   }
+
   .sublist {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
     width: 730rpx;
     margin: 0 auto;
-    div {
+
+    .collect-list {
       width: 360rpx;
       background: #fff;
       margin-bottom: 10rpx;
       padding-bottom: 10rpx;
+
       img {
         display: block;
         width: 302rpx;
         height: 302rpx;
         margin: 0 auto;
       }
+
       p {
         margin-bottom: 5rpx;
         text-indent: 1em;
       }
+
       p:nth-child(2) {
         overflow: hidden;
         text-overflow: ellipsis;
         white-space: nowrap;
         width: 98%;
       }
+
       p:nth-child(3) {
         color: #9c3232;
       }
     }
+
+    .collect-empty {
+      width:100%;
+      margin-top: 200rpx;
+      .center{
+        img {
+          display: block;
+          width: 258rpx;
+          height: 258rpx;
+          margin: 0 auto;
+        }
+        p {
+          text-align: center;
+          .home {
+            color: green;
+          }
+        }
+      }
+    }
+
     .last {
       display: block;
       width: 302rpx;
@@ -48,6 +74,7 @@
       align-items: center;
       justify-content: center;
       flex-wrap: wrap;
+
       p {
         height: 33rpx;
         width: 100%;
@@ -56,6 +83,7 @@
         font-size: 33rpx;
         text-align: center;
       }
+
       .icon {
         display: inline-block;
         width: 70rpx;
@@ -65,8 +93,10 @@
         margin-top: 60rpx;
       }
     }
+
     div:nth-child(2n) {
       margin-left: 10rpx;
     }
+
   }
 }

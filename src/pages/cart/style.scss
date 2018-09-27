@@ -83,6 +83,23 @@
       }
     }
   }
+  .cart-empty {
+    margin-top: 200rpx;
+    .center{
+      img {
+        margin: 0 auto;
+        display: block;
+        width: 258rpx;
+        height: 258rpx;
+      }
+      p {
+        text-align: center;
+        .home {
+          color: green;
+        }
+      }
+    }
+  }
   .fixed {
     position: fixed;
     bottom: 0;
@@ -122,15 +139,6 @@
         background: #b4282d;
         color: #fff;
       }
-    }
-  }
-  .nogoods {
-    margin-top: 200rpx;
-    img {
-      margin: 0 auto;
-      display: block;
-      width: 258rpx;
-      height: 258rpx;
     }
   }
 }

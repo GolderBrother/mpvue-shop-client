@@ -252,11 +252,19 @@ export default {
     },
     async collect() {
       if (toLogin()) {
+        // 取消收藏
+        if(this.collectFlag){
+          const res = await get("/collect/deleteCollect",{
+            openId: this.userInfo.openId,
+            goodsId: this.goodsId
+          });
+        }else{ // 收藏
+          const res = await post("/collect/addcollect", {
+            openId: this.userInfo.openId,
+            goodsId: this.goodsId
+          });
+        }
         this.collectFlag = !this.collectFlag;
-        const data = await post("/collect/addcollect", {
-          openId: this.userInfo.openId,
-          goodsId: this.goodsId
-        });
       }
     },
     async addCart() {

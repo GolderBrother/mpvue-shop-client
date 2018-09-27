@@ -56,7 +56,7 @@ export const get = async (url, data) => {
     const {
       data: dataRes,
       msg
-    } = await request(url, 'GET', data);
+    } = res;
     if (dataRes === false && !msg) {
       wx.showToast({
         icon: 'none',

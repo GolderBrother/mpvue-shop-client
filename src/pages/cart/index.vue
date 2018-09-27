@@ -5,8 +5,7 @@
       <div>48小时快速退款</div>
       <div>满88元免邮费</div>
     </div>
-    <div class="cartlist">
-      <!--  -->
+    <div v-if="listData.length !== 0" class="cartlist">
       <div class="item" @click="goGoodsDetail(item.goods_id)" @touchstart="startMove" @touchmove="deleteGoods" @touchend="endMove" :data-index="index" v-for="(item,index) in listData"
         :key="index">
         <div class="con" :style="item.textStyle">
@@ -36,10 +35,15 @@
 
       </div>
     </div>
-    <div v-if="false" class="nogoods">
-      <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" alt="">
+    <div v-else class="cart-empty">
+      <div class="center">
+        <img src="http://nos.netease.com/mailpub/hxm/yanxuan-wap/p/20150730/style/img/icon-normal/noCart-a8fe3f12e5.png" alt="">
+        <p>
+          购物车空空如也！快去<span class="home" @click="goHome">逛逛</span>吧
+        </p>
+      </div>
     </div>
-    <div class="fixed">
+    <div v-if="listData.length !== 0" class="fixed">
       <div @click="allCheck" :class="{active:allcheck}" class="left">
         全选({{isCheckedNumber}})
       </div>
@@ -214,6 +218,7 @@ export default {
             const { data } = await get("/cart/deleteAction", {
               id: id
             });
+            console.log(data);
             if(data){
               this.getListData();
             }
@@ -280,6 +285,12 @@ export default {
           title: "该商品不存在"
         });
       }
+    },
+    // 跳转首页
+    goHome(){
+      wx.switchTab({
+        url:"/pages/index/main"
+      });
     }
   },
   computed: {

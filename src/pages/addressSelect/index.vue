@@ -3,7 +3,7 @@
 
     <scroll-view scroll-y="true" class="addcont" style="height: 100%;">
       <!-- <div class="addcont"> -->
-      <div v-if="listData.length!=0" class="item">
+      <div v-if="listData.length!==0" class="item">
         <div class="list" v-for="(item, index) in listData" :key="index">
           <div class="addresslist" :style="item.textStyle">
             <div>
