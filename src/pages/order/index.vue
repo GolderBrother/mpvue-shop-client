@@ -37,7 +37,7 @@
       </div>
     </div>
     <div class="cartlist">
-      <div class="item" v-for="(item,index) in listData" :key="index" @click="goodsDetail(item.goods_id)">
+      <div class="item" v-for="(item,index) in listData" :key="index" @click="goGoodsDetail(item.goods_id)">
         <div class="con">
           <div class="left">
             <div class="img">
@@ -123,10 +123,18 @@ export default {
         this.address = data.address;
       }
     },
-    goodsDetail(goodsId) {
-      wx.navigateTo({
-        url: `/pages/goods/main?id=${goodsId}`
-      });
+    // 跳转商品详情
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
   },
   computed: {}

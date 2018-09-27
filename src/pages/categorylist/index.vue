@@ -6,11 +6,12 @@
       </div>
     </scroll-view>
     <div class="info">
+      <img :src="currentNav.wap_banner_url" :alt="currentNav.name">
       <p>{{currentNav.name}}</p>
       <p>{{currentNav.front_desc}}</p>
     </div>
     <div class="list" v-if="goodsList.length!=0">
-      <div @click="goodsDetail(item.id)" class="item" v-for="(item, index) in goodsList" :key="index">
+      <div @click="goGoodsDetail(item.id)" class="item" v-for="(item, index) in goodsList" :key="index">
         <img :src="item.list_pic_url" alt="">
         <p class="name">{{item.name}}</p>
         <p class="price">￥{{item.retail_price}}</p>
@@ -101,11 +102,17 @@ export default {
       }
     },
     // 跳转商品详情
-    goodsDetail(id) {
-      console.log(id);
-      wx.navigateTo({
-        url: `/pages/goods/main?id=${id}`
-      });
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
   },
   computed: {}

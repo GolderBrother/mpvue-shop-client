@@ -21,7 +21,7 @@ export default {
     "window": {
       "backgroundTextStyle": "light",
       "navigationBarBackgroundColor": "#fff",
-      "navigationBarTitleText": "james",
+      "navigationBarTitleText": "mpvue-shop-james",
       "navigationBarTextStyle": "black"
     },
     "tabBar": {

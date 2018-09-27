@@ -1,16 +1,16 @@
 <template>
     <div class="branddetail">
         <div class="banner">
-            <img src="http://yanxuan.nosdn.127.net/1541445967645114dd75f6b0edc4762d.png" alt="">
+            <img :src="detailData.pic_url" :alt="detailData.name">
             <div class="info">
-                <span>MUJI制造商</span>
+                <span>{{ detailData.name }}</span>
             </div>
         </div>
         <div class="info-desc">
-            严选精选了MUJI制造商和生产原料， 用几乎零利润的价格，剔除品牌溢价， 让用户享受原品牌的品质生活。
+            {{ detailData.simple_desc }}
         </div>
         <div v-if="goodsList.length!=0" class="sortlist">
-            <div v-for="(item, index) in goodsList" :key="index" class="item">
+            <div v-for="(item, index) in goodsList" :key="index" class="item" @click="goGoodsDetail(item.id)">
                 <img :src="item.list_pic_url" alt="">
                 <p class="name">{{item.name}}</p>
                 <p class="price">￥{{item.retail_price}}</p>
@@ -40,9 +40,24 @@ export default {
   components: {},
   methods: {
     async getDetail() {
-      const data = await get("/brand/detailaction", { id: this.id });
-      this.detailData = data.data;
-      this.goodsList = data.goodsList;
+      const { data, goodsList } = await get("/brand/detailaction", {
+        id: this.id
+      });
+      this.detailData = data;
+      this.goodsList = goodsList;
+    },
+    // 跳转商品详情
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
   },
   computed: {}

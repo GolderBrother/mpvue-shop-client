@@ -51,7 +51,7 @@
         <div @click="changeTab(2)" :class="[2==nowIndex ?'active':'']">分类</div>
       </div>
       <div class="sortlist">
-        <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']"
+        <div @click="goGoodsDetail(item.id)" v-for="(item, index) in listData" :key="index" :class="[(listData.length)%2==0?'active':'none']"
           class="item">
           <img :src="item.list_pic_url" alt="">
           <p class="name">{{item.name}}</p>
@@ -104,10 +104,17 @@ export default {
       this.isHot = "";
       this.isNew = "";
     },
-    goodsDetail(id) {
-      wx.navigateTo({
-        url: "/pages/goods/main?id=" + id
-      });
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     },
     cancel() {
       wx.navigateBack({

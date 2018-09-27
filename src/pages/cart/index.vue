@@ -28,7 +28,7 @@
           </div>
         </div>
 
-        <div @click="delGoods(item.id,index)" class="delete" :style="item.textStyle1">
+        <div @click.stop="delGoods(item.id,index)" class="delete" :style="item.textStyle1">
           <div>
             删除
           </div>
@@ -268,10 +268,18 @@ export default {
         this.$set(this.Listids, index, id);
       }
     },
+    // 跳转商品详情
     goGoodsDetail(goodsId) {
-      wx.navigateTo({
-        url: `/pages/goods/main?id=${goodsId}`
-      });
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
   },
   computed: {

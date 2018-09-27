@@ -147,6 +147,7 @@ export default {
     if (login()) {
       this.userInfo = login();
     }
+    // 获取 get 提交的 query 参数
     this.id = this.$root.$mp.query.id;
     this.openId = getStorageOpenid();
     this.handleGoodsDetail();

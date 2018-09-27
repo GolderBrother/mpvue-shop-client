@@ -8,12 +8,18 @@
         <span>{{item.floor_price}}元起</span>
       </div>
     </div>
+    <div class="hasmore" v-if="!hasMore">没有更多了...</div>
   </div>
 </template>
 
 <script>
 import { get } from "../../utils";
 export default {
+  onLoad() {
+    wx.setNavigationBarTitle({
+      title: "品牌商列表"
+    });
+  },
   // 下拉刷新 需要覆盖旧的数据
   onPullDownRefresh() {
     this.page = 1;
@@ -21,13 +27,15 @@ export default {
     //刷新完成后关闭
     wx.stopPullDownRefresh();
   },
-  // 上拉加载 不需要覆盖旧的数据
+  // 上拉加载 不需要覆盖旧的数据,追加新数据
   onReachBottom() {
-    this.page = this.page + 1;
+    this.page += 1;
     if (this.page > this.total) {
+      this.hasMore = false;
+      this.page = this.total;
       return false;
     }
-    this.getData();
+    this.getData(false);
   },
   created() {},
   mounted() {
@@ -37,19 +45,22 @@ export default {
     return {
       listData: [],
       page: 1,
-      total: 0
+      total: 0,
+      hasMore: true
     };
   },
   components: {},
   methods: {
     async getData(first) {
-      const { data } = await get("/brand/listaction", { page: this.page });
-      this.total = data.total;
+      const { data, total } = await get("/brand/listaction", {
+        page: this.page
+      });
+      this.total = total;
       // 需不需要覆盖旧的数据
       if (first) {
         this.listData = data;
       } else {
-        this.listData = [...this.listData,...data];
+        this.listData = [...this.listData, ...data];
       }
     },
     branddetail(id) {

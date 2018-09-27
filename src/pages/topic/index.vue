@@ -67,8 +67,14 @@ export default {
       }
     },
     topicDetail(id) {
-      console.log(id);
-      wx.navigateTo({ url: "/pages/topicdetail/main?id=" + id });
+      if(id){
+        wx.navigateTo({ url: "/pages/topicdetail/main?id=" + id });
+      }else{
+        wx.showToast({
+          icon:"none",
+          title:'该专题不存在'
+        })
+      }
     }
   },
   computed: {}

@@ -1,4 +1,3 @@
-
 //-------------------------------------------------------------------------请求的封装
 
 // const host = 'https://www.heyuhsuo.xyz/heyushuo';
@@ -17,8 +16,9 @@ export {
  * @return {Promise}
  */
 function request(url, method, data, header = {}) {
+  //添加全局的，数据请求前loading
   wx.showLoading({
-    title: '加载中' //数据请求前loading
+    title: '加载中'
   })
   return new Promise((resolve, reject) => {
     // wx请求 相当于翻版的jquery的ajax : $.ajax
@@ -31,7 +31,7 @@ function request(url, method, data, header = {}) {
       },
       success: function (res) {
         wx.hideLoading();
-        console.log("request",res)
+        console.log("request", res)
         resolve(res.data)
       },
       fail: function (error) {
@@ -45,20 +45,33 @@ function request(url, method, data, header = {}) {
   })
 }
 /**
- * get 请求 对请求响应前拦截，处理异常错误等
+ * get 请求 对请求响应前拦截，处理操作失败，处理异常错误等
  * @param {string} url 
  * @param {Object} data 
  * @return {Promise} 
  */
-export const get = async(url, data) => {
+export const get = async (url, data) => {
   try {
     const res = await request(url, 'GET', data);
+    const {
+      data: dataRes,
+      msg
+    } = await request(url, 'GET', data);
+    if (dataRes === false && !msg) {
+      wx.showToast({
+        icon: 'none',
+        title: msg,
+      });
+      return;
+    }
     return res;
   } catch (error) {
-    const { errMsg } = error;
+    const {
+      errMsg
+    } = error;
     wx.showToast({
-      icon:'none',
-      title:errMsg
+      icon: 'none',
+      title: errMsg
     });
     return {
       data: false,
@@ -80,12 +93,25 @@ export const get = async(url, data) => {
 export const post = async (url, data) => {
   try {
     const res = await request(url, 'POST', data);
+    const {
+      data: dataRes,
+      msg
+    } = res;
+    if (!dataRes) {
+      wx.showToast({
+        icon: 'none',
+        title: msg
+      });
+      return;
+    }
     return res;
   } catch (error) {
-    const { errMsg } = error;
+    const {
+      errMsg
+    } = error;
     wx.showToast({
-      icon:'none',
-      title:errMsg
+      icon: 'none',
+      title: errMsg
     });
     return {
       data: false,

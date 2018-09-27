@@ -9,7 +9,7 @@
       <div @click="changeTab(2)" :class="[2==nowIndex ?'active':'']">分类</div>
     </div>
     <div class="sortlist">
-      <div @click="goodsDetail(item.id)" v-for="(item, index) in listData" :key="index" class="item">
+      <div @click="goGoodsDetail(item.id)" v-for="(item, index) in listData" :key="index" class="item">
         <img :src="item.list_pic_url" alt="">
         <p class="name">{{item.name}}</p>
         <p class="price">￥{{item.retail_price}}</p>
@@ -69,10 +69,18 @@ export default {
       }
       this.getlistData();
     },
-    goodsDetail(id) {
-      wx.navigateTo({
-        url: "/pages/goods/main?id=" + id
-      });
+    // 跳转商品详情
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
   },
   computed: {}

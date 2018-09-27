@@ -4,7 +4,7 @@
       我的收藏
     </div>
     <div class="sublist">
-      <div @click="goodsDetail(subitem.id)" v-for="(subitem, subindex) in collectlist" :key="subindex">
+      <div @click="goGoodsDetail(subitem.id)" v-for="(subitem, subindex) in collectlist" :key="subindex">
         <img :src="subitem.list_pic_url" alt="">
         <p>{{subitem.name}}</p>
         <p>￥{{subitem.retail_price}}</p>
@@ -39,11 +39,20 @@ export default {
       });
       this.collectlist = data.collectGoodsList;
     },
-    goodsDetail(id) {
-      wx.navigateTo({
-        url: `/pages/goods/main?id=${id}`
-      });
+    // 跳转商品详情
+    goGoodsDetail(goodsId) {
+      if (goodsId) {
+        wx.navigateTo({
+          url: `/pages/goods/main?id=${goodsId}`
+        });
+      } else {
+        wx.showToast({
+          icon: "none",
+          title: "该商品不存在"
+        });
+      }
     }
+    
   },
   computed: {}
 };
