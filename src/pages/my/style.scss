@@ -36,21 +36,18 @@
       border-right: 1rpx solid rgba(0, 0, 0, .15);
       border-bottom: 1rpx solid rgba(0, 0, 0, .15);
       box-sizing: border-box;
+      &:nth-child(3n+3) {
+        border-right: none;
+      }
+      &:nth-last-child(1),&:nth-last-child(2),&:nth-last-child(3) {
+        border-bottom: none;
+      }
       span {
         display: block;
       }
       span:nth-child(1) {
         margin-bottom: 10rpx;
       }
-    }
-    div:nth-child(3n+3) {
-      border-right: none;
-    }
-    div:nth-last-child(1) {
-      border-bottom: none;
-    }
-    div:nth-last-child(2) {
-      border-bottom: none;
     }
   }
 }

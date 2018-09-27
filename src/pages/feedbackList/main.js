@@ -8,6 +8,6 @@ export default {
     enablePullDownRefresh: true
   },
   usingComponents: {
-    "i-button": "../../../iview-weapp/button/index"
+    "i-page": "../../../static/iview-weapp/page/index"
   }
 }

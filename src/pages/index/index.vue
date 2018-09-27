@@ -120,6 +120,11 @@
         </div>
       </div>
     </div>
+    <div class="footer">
+      <div class="not-has-more">
+        没有更多了...
+      </div>
+    </div>
   </div>
 </template>
 

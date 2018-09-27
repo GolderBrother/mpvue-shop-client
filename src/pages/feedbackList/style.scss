@@ -6,12 +6,14 @@
 
 .feedback-list {
   background-color: #fff;
+
   &-wrapper {
     .title {
       padding: 10rpx 0;
       text-align: center;
-      h2{
-          font-size: 32rpx;
+
+      h2 {
+        font-size: 32rpx;
       }
     }
   }
@@ -46,7 +48,41 @@
       }
     }
 
+    .pagination {
+      display: flex;
+      text-align: center;
+      line-height: 40px;
+      font-size: 14px;
 
+      &-item {
+        -webkit-box-flex: 1;
+        -webkit-flex: 1;
+        flex: 1;
+        height: 40px;
+        min-width: 36px;
+        color: #38f;
+        background-color: #fff;
+        box-sizing: border-box;
+        -webkit-user-select: none;
+        user-select: none;
+
+        &-disabled {
+          background-color: #f8f8f8;
+          color: #666;
+          opacity: 0.6;
+        }
+
+        &-active {
+          color: #fff;
+          background-color: #38f;
+        }
+      }
+
+      &-prev,
+      &-next {
+        padding: 0 5px;
+      }
+    }
   }
 
 }

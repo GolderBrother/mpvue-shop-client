@@ -405,4 +405,12 @@
       }
     }
   }
+
+  .footer {
+    .not-has-more {
+      display: flex;
+      justify-content: center;
+      padding:20prx 0;
+    }
+  }
 }
