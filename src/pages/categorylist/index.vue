@@ -37,7 +37,7 @@ export default {
   },
   data() {
     return {
-      categoryId: "",
+      categoryId: 0,
       nowIndex: 0,
       goodsList: [],
       navData: [],
@@ -48,7 +48,7 @@ export default {
   components: {},
   methods: {
     initData() {
-      this.categoryId = "";
+      this.categoryId = 0;
       this.nowIndex = 0;
       this.goodsList = [];
       this.navData = [];
