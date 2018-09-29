@@ -179,7 +179,7 @@ export default {
       id: "",
       userInfo: "",
       goodsId: "",
-      allPrise: ""
+      allPrice: 0
     };
   },
   components: {
@@ -202,7 +202,7 @@ export default {
       this.goods_desc = "";
       this.id = "";
       this.goodsId = "";
-      this.allPrise = "";
+      this.allPrice = 0;
     },
     toGoodsDetail(id) {
       wx.navigateTo({
@@ -232,13 +232,12 @@ export default {
             });
             return false;
           }
-          console.log(this.goodsId);
-          console.log(this.openId);
-
+          console.log(this.allPrice,this.number,this.allPrice * this.number)
           const data = await post("/order/submitAction", {
             goodsId: this.goodsId,
             openId: this.openId,
-            allPrise: this.allPrise
+            goodsNumber:this.number,
+            allPrice: this.allPrice * this.number
           });
           if (data) {
             wx.navigateTo({
@@ -253,15 +252,16 @@ export default {
     async collect() {
       if (toLogin()) {
         // 取消收藏
+        const { goodsId,userInfo:{openId}} = this;
         if(this.collectFlag){
           const res = await get("/collect/deleteCollect",{
-            openId: this.userInfo.openId,
-            goodsId: this.goodsId
+            openId,
+            goodsId
           });
         }else{ // 收藏
           const res = await post("/collect/addcollect", {
-            openId: this.userInfo.openId,
-            goodsId: this.goodsId
+            openId,
+            goodsId
           });
         }
         this.collectFlag = !this.collectFlag;
@@ -316,7 +316,7 @@ export default {
       });
       this.gallery = data.gallery;
       this.info = data.info;
-      this.allPrise = data.info.retail_price;
+      this.allPrice = data.info.retail_price;
       this.goodsId = data.info.id;
       this.brand = data.brand;
       this.attribute = data.attribute;

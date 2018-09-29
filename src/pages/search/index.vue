@@ -86,8 +86,8 @@ export default {
       listData: [],
       openid: "",
       order: "",
-      isHot: "",
-      isNew: ""
+      isHot: 0,
+      isNew: 0
     };
   },
   components: {},
@@ -101,8 +101,8 @@ export default {
       this.listData = [];
       this.openid = "";
       this.order = "";
-      this.isHot = "";
-      this.isNew = "";
+      this.isHot = 0;
+      this.isNew = 0;
     },
     goGoodsDetail(goodsId) {
       if (goodsId) {
@@ -160,8 +160,9 @@ export default {
       }
     },
     async searchWords(e) {
-      const { type = "" } = e;
-      this.words = type === "confirm" ? e.currentTarget.dataset.value : e;
+      // const { type = "" } = e;
+      // this.words = type === "confirm" ? e.target.value : e.currentTarget.dataset.value;
+      this.words = e.target.value || e.currentTarget.dataset.value;
       console.log(this.words);
       // 添加搜索关键词到搜索历史中
       if (!this.words) {

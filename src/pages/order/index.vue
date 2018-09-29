@@ -113,13 +113,14 @@ export default {
         url: "/pages/addaddress/main"
       });
     },
-    async getDetail() { isEmptyObj
-      const { allPrise,goodsList,address } = await get("/order/detailAction", {
+    async getDetail() { 
+      console.log("getDetail");
+      const { allPrice,goodsList,address } = await get("/order/detailAction", {
         openId: this.openId,
         addressId: this.addressId
       });
-      if (!isEmptyObj(address) && goodsList.length !== 0 && allPrise) {
-        this.allprice = allPrise;
+      if (!isEmptyObj(address) && goodsList.length !== 0 && allPrice) {
+        this.allprice = allPrice;
         this.listData = goodsList;
         this.address = address;
       }

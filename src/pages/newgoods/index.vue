@@ -38,8 +38,8 @@ export default {
   data() {
     return {
       order: "",
-      isHot: "",
-      isNew: "",
+      isHot: 0,
+      isNew: 0,
       nowIndex: 0,
       navData: ["综合", "价格", "分类"],
       listData: []
@@ -49,8 +49,8 @@ export default {
   methods: {
     initData() {
       this.order = "";
-      this.isHot = "";
-      this.isNew = "";
+      this.isHot = 0;
+      this.isNew = 0;
       this.nowIndex = 0;
       this.navData = ["综合", "价格", "分类"];
       this.listData = [];
