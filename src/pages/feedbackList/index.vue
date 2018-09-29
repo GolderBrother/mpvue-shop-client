@@ -42,14 +42,16 @@ import { get, getStorageOpenid } from "@/utils";
 import pagination from "@/components/pagination";
 export default {
   onLoad() {
-    wx.setNavigationBarTitle({
-      title: "反馈列表"
-    });
     this.openId = getStorageOpenid();
     (async () => {
       await this.getList(true, this.page);
       console.log("total", this.total);
     })();
+  },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"反馈列表"
+    });
   },
   // 下拉刷新 需要覆盖旧的数据
   // 需要在main.js中配置 config: {

@@ -44,6 +44,11 @@ export default {
   onLoad() {
     this.initData();
   },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"增加地址"
+    });
+  },
   created() {},
   mounted() {
     let navigationTitle = "增加地址";
@@ -67,9 +72,6 @@ export default {
       this.id = id;
       this.getDetail();
     }
-    wx.setNavigationBarTitle({
-      title:navigationTitle
-    });
   },
   data() {
     return {

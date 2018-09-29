@@ -26,6 +26,11 @@ export default {
     this.initData();
     this.getMapaddress();
   },
+  onReady() {
+    wx.setNavigationBarTitle({
+      title: "选择位置"
+    });
+  },
   created() {},
   mounted() {},
   data() {

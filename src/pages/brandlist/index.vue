@@ -15,9 +15,9 @@
 <script>
 import { get } from "@/utils";
 export default {
-  onLoad() {
+  onReady(){
     wx.setNavigationBarTitle({
-      title: "品牌商列表"
+      title:"品牌商列表"
     });
   },
   // 下拉刷新 需要覆盖旧的数据

@@ -28,10 +28,11 @@ export default {
       console.log(this.userInfo);
       this.avator = this.userInfo.avatarUrl;
     }
-    wx.setNavigationBarTitle({ title: "我的" });
   },
-  created() {
-    
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"我的"
+    });
   },
   mounted() {},
   data() {

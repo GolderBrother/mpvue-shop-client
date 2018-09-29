@@ -36,8 +36,10 @@
 <script>
 import { get } from "@/utils";
 export default {
-  onShow() {
-    wx.setNavigationBarTitle({ title: "分类" });
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"分类"
+    });
   },
   mounted() {
     //获取列表数据

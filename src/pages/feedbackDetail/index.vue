@@ -23,12 +23,14 @@ import { get, getStorageOpenid } from "@/utils";
 import { isEmptyObj, formatMsgTime } from "@/utils/utils";
 export default {
   onLoad() {
-    wx.setNavigationBarTitle({
-      title: "我的反馈"
-    });
     this.id = this.$root.$mp.query.id;
     this.openId = getStorageOpenid();
     this.getDetail();
+  },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"我的反馈"
+    });
   },
   data() {
     return {

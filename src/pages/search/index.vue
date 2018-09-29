@@ -66,10 +66,12 @@
 import { post, get } from "@/utils";
 export default {
   onLoad() {
+    this.initData();
+  },
+  onReady(){
     wx.setNavigationBarTitle({
       title:"搜索"
     });
-    this.initData();
   },
   created() {},
   mounted() {

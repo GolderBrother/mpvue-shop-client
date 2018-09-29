@@ -19,7 +19,7 @@
 import { get } from "@/utils";
 import wxParse from "mpvue-wxparse";
 export default {
-  onShow() {
+  onReady(){
     wx.setNavigationBarTitle({
       title:"专题"
     });

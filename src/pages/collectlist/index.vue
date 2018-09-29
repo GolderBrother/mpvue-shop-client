@@ -27,11 +27,13 @@
 import { get, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
-    wx.setNavigationBarTitle({
-      title: "收藏"
-    });
     this.openId = getStorageOpenid();
     this.getlist();
+  },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"收藏"
+    });
   },
   created() {},
   mounted() {},

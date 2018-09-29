@@ -136,8 +136,11 @@ export default {
   onLoad() {
     this.getCityName();
   },
-  onShow() {
-    wx.setNavigationBarTitle({ title: "首页" });
+  // 对页面的设置请在onReady之后设置,如wx.setNavigationBarTitle
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"首页"
+    });
   },
   computed: {
     ...mapGetters(["cityName"])

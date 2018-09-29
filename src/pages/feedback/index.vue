@@ -20,56 +20,59 @@
 </template>
 
 <script>
-  import {
-    post,
-    login,
-  } from '@/utils'
-  export default {
-    mounted() {
-      //判断是否登录获取用户信息
-      if (login()) {
-        this.userInfo = login();
-        console.log(this.userInfo);
+import { post, login } from "@/utils";
+export default {
+  onReady() {
+    wx.setNavigationBarTitle({
+      title: "反馈"
+    });
+  },
+  mounted() {
+    //判断是否登录获取用户信息
+    if (login()) {
+      this.userInfo = login();
+      console.log(this.userInfo);
+    }
+  },
+  data() {
+    return {
+      userInfo: {},
+      content: "",
+      phone: ""
+    };
+  },
+  components: {},
+  methods: {
+    async submitComment() {
+      const _this = this;
+      const {
+        userInfo: { openId, nickName },
+        content,
+        phone
+      } = this;
+      const data = await post("/feedback/submitAction", {
+        openId: openId,
+        name: nickName,
+        content: content,
+        phone: phone
+      });
+      if (data.data) {
+        wx.showToast({
+          title: "提交成功", //提示的内容,
+          icon: "none", //图标,
+          duration: 2000, //延迟时间,
+          mask: true, //显示透明蒙层，防止触摸穿透,
+          success: res => {
+            _this.content = "";
+            _this.phone = "";
+          }
+        });
       }
-    },
-    data() {
-      return {
-        userInfo: {},
-        content: '',
-        phone: ''
-      };
-    },
-    components: {},
-    methods: {
-      async submitComment() {
-        const _this = this;
-        const { userInfo:{openId,nickName},content,phone } = this;
-        const data = await post('/feedback/submitAction', {
-          openId: openId,
-          name: nickName,
-          content: content,
-          phone: phone
-        })
-        if (data.data) {
-          wx.showToast({
-            title: '提交成功', //提示的内容,
-            icon: 'none', //图标,
-            duration: 2000, //延迟时间,
-            mask: true, //显示透明蒙层，防止触摸穿透,
-            success: res => {
-              _this.content = '';
-              _this.phone = '';
-            }
-          });
-
-        }
-      },
-    },
-    computed: {}
-  };
-
+    }
+  },
+  computed: {}
+};
 </script>
 <style lang='scss' scoped>
-  @import "./style";
-
+@import "./style";
 </style>

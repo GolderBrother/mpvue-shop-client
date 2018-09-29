@@ -29,6 +29,11 @@ export default {
   onLoad() {
     this.initData();
   },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"专题"
+    });
+  },
   created() {},
   mounted() {
     //获取页面传的参数

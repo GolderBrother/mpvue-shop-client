@@ -61,9 +61,13 @@
 import { get, post, login, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
-    wx.setNavigationBarTitle({ title: "购物车" });
     this.openId = getStorageOpenid();
     this.getListData();
+  },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"购物车"
+    });
   },
   created() {},
   data() {

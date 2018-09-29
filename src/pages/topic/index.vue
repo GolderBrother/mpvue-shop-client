@@ -31,8 +31,10 @@ export default {
     }
     this.getListData();
   },
-  onShow() {
-    wx.setNavigationBarTitle({ title: "专题" });
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"专题"
+    });
   },
   created() {},
   mounted() {

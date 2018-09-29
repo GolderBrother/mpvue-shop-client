@@ -72,14 +72,16 @@ import { isEmptyObj } from "@/utils/utils";
 import { get, post, login, getStorageOpenid } from "@/utils";
 export default {
   onShow() {
-    wx.setNavigationBarTitle({
-      title:"我的订单"
-    });
     if (wx.getStorageSync("addressId")) {
       this.addressId = wx.getStorageSync("addressId");
     }
     this.openId = getStorageOpenid();
     this.getDetail();
+  },
+  onReady(){
+    wx.setNavigationBarTitle({
+      title:"我的订单"
+    });
   },
   created() {},
   mounted() {},
