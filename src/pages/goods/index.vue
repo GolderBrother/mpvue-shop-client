@@ -179,7 +179,8 @@ export default {
       id: "",
       userInfo: "",
       goodsId: "",
-      allPrice: 0
+      goodsAllPrice: 0,
+      submitType: "buy"
     };
   },
   components: {
@@ -202,7 +203,7 @@ export default {
       this.goods_desc = "";
       this.id = "";
       this.goodsId = "";
-      this.allPrice = 0;
+      this.goodsAllPrice = 0;
     },
     toGoodsDetail(id) {
       wx.navigateTo({
@@ -232,12 +233,12 @@ export default {
             });
             return false;
           }
-          console.log(this.allPrice,this.number,this.allPrice * this.number)
           const data = await post("/order/submitAction", {
-            goodsId: this.goodsId,
             openId: this.openId,
-            goodsNumber:this.number,
-            allPrice: this.allPrice * this.number
+            goodsId: this.goodsId,
+            goodsNums:this.number,
+            goodsPrice: this.goodsAllPrice,
+            submitType: this.submitType
           });
           if (data) {
             wx.navigateTo({
@@ -316,7 +317,7 @@ export default {
       });
       this.gallery = data.gallery;
       this.info = data.info;
-      this.allPrice = data.info.retail_price;
+      this.goodsAllPrice = data.info.retail_price * data.allnumber;
       this.goodsId = data.info.id;
       this.brand = data.brand;
       this.attribute = data.attribute;

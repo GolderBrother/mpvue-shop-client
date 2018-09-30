@@ -11,7 +11,7 @@
         <div class="con" :style="item.textStyle">
           <div class="left">
             <!-- @click.stop mpvue 阻止事件冒泡 -->
-            <div class="icon" @click.stop="changeColor(index,item.goods_id)" :class="[ Listids[index] ? 'active' : '',{active:allcheck}]"></div>
+            <div class="icon" @click.stop="changeColor(index,item)" :class="[ Listids[index] ? 'active' : '',{active:allcheck}]"></div>
             <div class="img">
               <img :src="item.list_pic_url" alt="">
             </div>
@@ -64,18 +64,21 @@ export default {
     this.openId = getStorageOpenid();
     this.getListData();
   },
-  onReady(){
+  onReady() {
     wx.setNavigationBarTitle({
-      title:"购物车"
+      title: "购物车"
     });
   },
   created() {},
   data() {
     return {
       openId: "",
+      submitType: "cart",
       allcheck: false,
       listData: [],
       Listids: [],
+      ListNums: [],
+      ListPrice: [],
       userInfo: {},
       tranX: 0,
       tranX1: 0,
@@ -93,7 +96,7 @@ export default {
   methods: {
     initTextStyle() {
       //滑动之前先初始化数据
-      this.listData.forEach((item,index) => {
+      this.listData.forEach((item, index) => {
         item.textStyle = "";
         item.textStyle1 = "";
       });
@@ -181,9 +184,22 @@ export default {
         }rpx);`;
       }
     },
+    getListString(arr,setString){
+      let removeEmptyArr = [];
+      arr.forEach(item => {
+        if (item) {
+          // 将每一项转转换为字符串
+          if(setString){
+            item = item.toString();
+          };
+          removeEmptyArr.push(item);
+        }
+      });
+      return removeEmptyArr.join(",");
+    },
     // 下单
     async orderDown() {
-      console.log(this.Listids)
+      console.log(this.listData);
       if (this.Listids.length == 0) {
         wx.showToast({
           title: "请选择商品",
@@ -192,18 +208,18 @@ export default {
         });
         return false;
       }
+      console.log(this.Listids,this.ListNums,this.ListPrice)
       // 去掉数组中空的false的
-      let newgoodsid = [];
-      this.Listids.forEach((item,index) => {
-        if (item) {
-          newgoodsid.push(item);
-        }
-      }); 
-      let goodsId = newgoodsid.join(",");
-      const {data} = await post("/order/submitAction", {
-        goodsId: goodsId,
+      const goodsIdStr = this.getListString(this.Listids, true);
+      const goodsNumsStr = this.getListString(this.ListNums, false);
+      const goodsPriceStr = this.getListString(this.ListPrice, false);
+      console.log(goodsIdStr,goodsNumsStr,goodsPriceStr);
+      const { data } = await post("/order/submitAction", {
         openId: this.openId,
-        allPrise: this.allPrise
+        goodsId: goodsIdStr,
+        goodsNums: goodsNumsStr,
+        goodsPrice: goodsPriceStr,
+        submitType: this.submitType
       });
       if (data) {
         wx.navigateTo({
@@ -216,14 +232,16 @@ export default {
       wx.showModal({
         title: "",
         content: "是否要删除该商品",
-        success: async (res) => {
+        success: async res => {
           if (res.confirm) {
             this.Listids.splice(index, 1);
+            this.ListNums.splice(index, 1);
+            this.ListPrice.splice(index, 1);
             const { data } = await get("/cart/deleteAction", {
               id: id
             });
             console.log(data);
-            if(data){
+            if (data) {
               this.getListData();
             }
           } else if (res.cancel) {
@@ -241,13 +259,13 @@ export default {
           openId: this.openId
         });
         if (!data) return;
-        data.forEach((item,index) => {
+        data.forEach((item, index) => {
           item.textStyle = "";
           item.textStyle1 = "";
         });
         this.listData = data;
       } catch (error) {
-        console.log(error)
+        console.log(error);
         // wx.showToast({
         //   title:"数据获取失败",
         //   icon: 'loading',
@@ -258,24 +276,40 @@ export default {
     allCheck() {
       //先清空所有
       this.Listids = [];
+      this.ListNums = [];
+      this.ListPrice = [];
       if (this.allcheck) {
         this.allcheck = false;
       } else {
         console.log("选择全部");
         this.allcheck = true;
         //循环遍历所有的商品id
-        this.listData.forEach((item,index) => {
+        console.log(this.listData);
+        this.listData.forEach((item, index) => {
           this.Listids.push(item.goods_id);
+          this.ListNums.push(item.number);
+          this.ListPrice.push(item.retail_price * item.number);
         });
       }
     },
     change(e) {},
-    changeColor(index, id) {
-      if (this.Listids[index]) {
-        this.$set(this.Listids, index, false);
-      } else {
-        this.$set(this.Listids, index, id);
-      }
+    // 单独选择
+    changeColor(index, item) {
+      this.$set(
+        this.Listids,
+        index,
+        this.Listids[index] ? false : item.goods_id
+      );
+      this.$set(
+        this.ListNums,
+        index,
+        this.ListNums[index] ? false : item.number
+      );
+      this.$set(
+        this.ListPrice,
+        index,
+        this.ListPrice[index] ? false : item.retail_price * item.number
+      );
     },
     // 跳转商品详情
     goGoodsDetail(goodsId) {
@@ -291,9 +325,9 @@ export default {
       }
     },
     // 跳转首页
-    goHome(){
+    goHome() {
       wx.switchTab({
-        url:"/pages/index/main"
+        url: "/pages/index/main"
       });
     }
   },
@@ -302,20 +336,21 @@ export default {
     isCheckedNumber() {
       let number = 0;
       this.Listids.forEach(item => {
-        if(item) number++;
-      })
-      this.allcheck = (number == this.listData.length && number != 0) ? true : false;
+        if (item) number++;
+      });
+      this.allcheck =
+        number == this.listData.length && number !== 0 ? true : false;
       return number;
     },
     // 计算总价
     allPrise() {
       let Prise = 0;
-      this.Listids.forEach((item,i) => {
-        if(item){
-          const goodsData = this.listData[i]; 
+      this.Listids.forEach((item, i) => {
+        if (item) {
+          const goodsData = this.listData[i];
           Prise += goodsData.retail_price * goodsData.number;
         }
-      })
+      });
       return Prise;
     }
   }

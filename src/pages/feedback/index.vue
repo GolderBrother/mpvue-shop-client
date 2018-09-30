@@ -43,6 +43,36 @@ export default {
   },
   components: {},
   methods: {
+    fieldVerify(type, str) {
+      if (type === "phone") {
+        if (!str) {
+          wx.showToast({
+            icon: "none",
+            title: "手机号不能为空"
+          });
+          return false;
+        }
+        const isPhone = /1(3|5|6|7|8|9)\d{9}/.test(str);
+        if (!isPhone) {
+          wx.showToast({
+            icon: "none",
+            title: "手机号格式不正确"
+          });
+          return false;
+        }
+        return true;
+      }
+      if (type === "content") {
+        if (!str) {
+          wx.showToast({
+            icon: "none",
+            title: "内容不能为空"
+          });
+          return false;
+        }
+        return true;
+      }
+    },
     async submitComment() {
       const _this = this;
       const {
@@ -50,6 +80,9 @@ export default {
         content,
         phone
       } = this;
+      const phoneVerify = this.fieldVerify("phone", phone);
+      const contentVerify = this.fieldVerify("content", content);
+      if (!phoneVerify || !contentVerify) return;
       const data = await post("/feedback/submitAction", {
         openId: openId,
         name: nickName,

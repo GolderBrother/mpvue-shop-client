@@ -5,7 +5,7 @@
     </div>
     <div class="sublist">
       <div v-if="collectlist.length !== 0" class="collect-list">
-        <div @click="goGoodsDetail(subitem.id)" v-for="(subitem, subindex) in collectlist" :key="subindex">
+        <div @click="goGoodsDetail(subitem.id)" v-for="(subitem, subindex) in collectlist" class="collect-item" :key="subindex">
           <img :src="subitem.list_pic_url" alt="">
           <p>{{subitem.name}}</p>
           <p>￥{{subitem.retail_price}}</p>

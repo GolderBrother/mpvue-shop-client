@@ -9,17 +9,19 @@
   }
 
   .sublist {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-between;
     width: 730rpx;
     margin: 0 auto;
 
     .collect-list {
-      width: 360rpx;
-      background: #fff;
-      margin-bottom: 10rpx;
-      padding-bottom: 10rpx;
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      .collect-item {
+        flex:1;
+        background-color: #fff;
+        margin:5rpx;
+      }
 
       img {
         display: block;
@@ -46,17 +48,20 @@
     }
 
     .collect-empty {
-      width:100%;
+      width: 100%;
       margin-top: 200rpx;
-      .center{
+
+      .center {
         img {
           display: block;
           width: 258rpx;
           height: 258rpx;
           margin: 0 auto;
         }
+
         p {
           text-align: center;
+
           .home {
             color: green;
           }
@@ -95,7 +100,7 @@
     }
 
     div:nth-child(2n) {
-      margin-left: 10rpx;
+      // margin-left: 10rpx;
     }
 
   }
