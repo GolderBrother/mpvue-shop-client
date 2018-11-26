@@ -13,8 +13,6 @@
 
 **2018 年 9 月 5 日 :** 在商品详情页面新增商品转发功能(分享功能)
 
-![Image text](https://github.com/heyushuo/mpvue-shop/blob/master/images/goods.png)
-
 **2018 年 8 月 30 日 :** 好多人反映登录无法登录,因为这个需要自己配置后台才可以,为了可以让大家体验登录后的一些操作,在这里我**添加了默认用户,大家可以体验其他功能!**
 这里可能会遇到问题:**大家都是使用的这一个账号,添加购物车,收藏还有一些收货地址之类的可能会显示很多人添加的,我会定期删除线上默认用户的这些信息,** **抓紧 clone 最新的代码体验**
 
@@ -88,14 +86,11 @@
 
 ![](https://user-gold-cdn.xitu.io/2018/8/25/165719e2d9b28ee1?w=327&h=573&f=gif&s=611343)
 
-# 小程序后端送门 [点击进入小程序服务端地址](https://github.com/heyushuo/mpvue-shop-node)
-
-# 项目总结和遇到的一些问题 # [点击进入博客查看详情](https://juejin.im/post/5b6323baf265da0f5511533a)
+# 小程序后端送门 [点击进入小程序服务端地址](https://github.com/GolderBrother/mpvue-shop-server)
 
 # 最后
 
 * 喜欢的记得点个 star,鼓励一下谢谢哈!!
-* 微信号 hys838723
-* qq 群号 647099996
+* 微信号 18450087586
 
-"appid": "wx601ce71bde7b9add"
+"appid": "wxd2677ab83f7a0569"
